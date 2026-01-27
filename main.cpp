@@ -4,6 +4,8 @@
 #ifdef _MSC_VER
 #include <Windows.h>
 #define sleep(x) _sleep(x)
+#else
+#include <unistd.h>
 #endif
 
 static int callMethod(
@@ -60,7 +62,7 @@ static int sendSignal(
 
     // append arguments onto signal
     dbus_message_iter_init_append(msg, &args);
-    char *sigvalue = "sssiggal sstring val";
+    const char *sigvalue = "sssiggal sstring val";
     if (!dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &sigvalue)) {
         std::cerr << "Out Of Memory\n";
         exit(-5);
@@ -88,7 +90,7 @@ static int receiveSignals(
         DBusMessage *msg = dbus_connection_pop_message(conn);
 
         if (!msg) {
-            _sleep(1);
+            sleep(1);
             continue;
         }
 
@@ -127,7 +129,7 @@ void reply_to_method_call_1(
 
     // add the arguments to the reply
     dbus_message_iter_init_append(reply, &args);
-    char *answer = "World";
+    const char *answer = "World";
     if (!dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &answer)) {
         exit(1);
     }
@@ -145,10 +147,22 @@ static int exposeMethod(
     DBusConnection *conn,
     DBusError *err
 ) {
+    std::cerr << "--(" << std::endl;
+    std::cerr << "0 " << err->name << " " << err->message << std::endl;
+    std::cerr << ")--" << std::endl;
     dbus_bus_request_name(conn, "hello.response.service", DBUS_NAME_FLAG_REPLACE_EXISTING , err);
+
+    std::cerr << "1 " << err->name << " " << err->message << std::endl;
+
     dbus_bus_add_match(conn, "type='method_call',interface='com.commandus.greeting',member='hello'", err);
+
+    std::cerr << "2 " << err->name << " " << err->message << std::endl;
+
     // path='/',destination='my.service'",
     dbus_connection_flush(conn);
+
+    std::cerr << "3 " << err->name << " " << err->message << std::endl;
+
     while (true) {
         // non blocking read of the next available message
         dbus_connection_read_write(conn, 0);
@@ -166,6 +180,9 @@ static int exposeMethod(
        // free the message
         dbus_message_unref(msg);
     }
+
+    std::cerr << "4 " << err->name << " " << err->message << std::endl;
+
 }
 
 int main() {
@@ -180,7 +197,7 @@ int main() {
     // Connect to D-Bus
     dbus_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &dbus_error);
     if (!dbus_conn) {
-        std::cerr <<dbus_error.name << " " <<dbus_error.message << std::endl;
+        std::cerr << dbus_error.name << " " <<dbus_error.message << std::endl;
         exit(-1);
     }
     std::cout << "Connected to D-Bus as \"" << ::dbus_bus_get_unique_name(dbus_conn) << "\"." << std::endl;
