@@ -62,6 +62,46 @@ Uncomment sendSignal()
 sendSignal(dbus_conn, &dbus_error);
 ```
 
+### Check method expose
+
+
+Call method from the console:
+
+```shell
+dbus-send --system --print-reply --type=method_call /com/example/Object com.commandus.greeting.hello string:"hello world"
+```
+
+### Check access rights
+
+```
+org.freedesktop.DBus.Error.AccessDenied Connection ":1.39" is not allowed to own the service "hello.response.service" due to security policies in the configuration file
+```
+
+```shell
+sudo vi /etc/dbus-1/system.d/com.commandus.greeting.conf
+```
+
+Enter
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- XML -*- -->
+<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig>
+  <policy user="root">
+    <allow own="org.freedesktop.PackageKit"/>
+  </policy>
+  <policy context="default">
+    <allow send_destination="com.commandus.greeting" send_interface="com.commandus.greeting"/>
+  </policy>
+</busconfig>
+```
+
+Restart service:
+
+```shell
+sudo systemctl restart dbus
+```
+
 ## References
 
 - [Matthew Johnson. Using the DBUS C API](http://www.matthew.ath.cx/misc/dbus)

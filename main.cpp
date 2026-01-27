@@ -148,20 +148,21 @@ static int exposeMethod(
     DBusError *err
 ) {
     std::cerr << "--(" << std::endl;
-    std::cerr << "0 " << err->name << " " << err->message << std::endl;
-    std::cerr << ")--" << std::endl;
-    dbus_bus_request_name(conn, "hello.response.service", DBUS_NAME_FLAG_REPLACE_EXISTING , err);
-
-    std::cerr << "1 " << err->name << " " << err->message << std::endl;
+    dbus_bus_request_name(conn, "com.commandus.greeting", DBUS_NAME_FLAG_REPLACE_EXISTING , err);
+    if (dbus_error_is_set(err)) {
+        std::cerr << "- " << err->name << " " << err->message << std::endl;
+        exit(-6);
+    }
 
     dbus_bus_add_match(conn, "type='method_call',interface='com.commandus.greeting',member='hello'", err);
 
-    std::cerr << "2 " << err->name << " " << err->message << std::endl;
+    if (dbus_error_is_set(err)) {
+        std::cerr << "-- " << err->name << " " << err->message << std::endl;
+        exit(-6);
+    }
 
     // path='/',destination='my.service'",
     dbus_connection_flush(conn);
-
-    std::cerr << "3 " << err->name << " " << err->message << std::endl;
 
     while (true) {
         // non blocking read of the next available message
@@ -181,8 +182,10 @@ static int exposeMethod(
         dbus_message_unref(msg);
     }
 
-    std::cerr << "4 " << err->name << " " << err->message << std::endl;
-
+    if (dbus_error_is_set(err)) {
+        std::cerr << "--- " << err->name << " " << err->message << std::endl;
+        exit(-6);
+    }
 }
 
 int main() {
