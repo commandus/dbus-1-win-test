@@ -154,6 +154,58 @@ static const char *server_introspection_xml = {
     "</node>"
 };
 
+static DBusHandlerResult server_get_properties_handler(
+    const char *property,
+    DBusConnection *conn,
+    DBusMessage *reply
+)
+{
+    const char *version = "0.01";
+    if (!strcmp(property, "Version")) {
+        dbus_message_append_args(reply, DBUS_TYPE_STRING, &version, DBUS_TYPE_INVALID);
+    } else
+        /* Unknown property */
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+
+    if (!dbus_connection_send(conn, reply, NULL))
+        return DBUS_HANDLER_RESULT_NEED_MEMORY;
+    return DBUS_HANDLER_RESULT_HANDLED;
+}
+
+static DBusHandlerResult server_get_all_properties_handler(DBusConnection *conn, DBusMessage *reply)
+{
+    DBusHandlerResult result;
+    DBusMessageIter array, dict, iter, variant;
+    const char *property = "Version";
+
+    /*
+     * All dbus functions used below might fail due to out of
+     * memory error. If one of them fails, we assume that all
+     * following functions will fail too, including
+     * dbus_connection_send().
+     */
+    result = DBUS_HANDLER_RESULT_NEED_MEMORY;
+
+    dbus_message_iter_init_append(reply, &iter);
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "{sv}", &array);
+
+    /* Append all properties name/value pairs */
+    property = "Version";
+    dbus_message_iter_open_container(&array, DBUS_TYPE_DICT_ENTRY, NULL, &dict);
+    dbus_message_iter_append_basic(&dict, DBUS_TYPE_STRING, &property);
+    dbus_message_iter_open_container(&dict, DBUS_TYPE_VARIANT, "s", &variant);
+    const char *version = "0.01";
+    dbus_message_iter_append_basic(&variant, DBUS_TYPE_STRING, &version);
+    dbus_message_iter_close_container(&dict, &variant);
+    dbus_message_iter_close_container(&array, &dict);
+
+    dbus_message_iter_close_container(&iter, &array);
+
+    if (dbus_connection_send(conn, reply, NULL))
+        result = DBUS_HANDLER_RESULT_HANDLED;
+    return result;
+}
+
 static DBusHandlerResult greeting_handler(
     DBusConnection *conn,
     DBusMessage *message,
@@ -175,8 +227,26 @@ static DBusHandlerResult greeting_handler(
 		if (reply = dbus_message_new_method_return(message)) {
 		    dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
         }
-
 	}
+    if (dbus_message_is_method_call(message, DBUS_INTERFACE_PROPERTIES, "Get")) {
+        DBusError err;
+        dbus_error_init(&err);
+        const char *intface, *property;
+        if (!dbus_message_get_args(message, &err, DBUS_TYPE_STRING, &intface, DBUS_TYPE_STRING, &property, DBUS_TYPE_INVALID)) {
+        }
+        if (!(reply = dbus_message_new_method_return(message))) {
+        }
+        auto result = server_get_properties_handler(property, conn, reply);
+        dbus_message_unref(reply);
+        return result;
+    }
+    if (dbus_message_is_method_call(message, DBUS_INTERFACE_PROPERTIES, "GetAll")) {
+        if (!(reply = dbus_message_new_method_return(message))) {
+        }
+        auto result = server_get_all_properties_handler(conn, reply);
+        dbus_message_unref(reply);
+        return result;
+    }
     if (reply) {
         bool rr = dbus_connection_send(conn, reply, NULL);
         dbus_message_unref(reply);
@@ -187,6 +257,46 @@ static DBusHandlerResult greeting_handler(
 }
 
 static int exposeMethod(
+    DBusConnection *conn,
+    DBusError *err
+) {
+    dbus_bus_request_name(conn, "com.commandus.greeting", DBUS_NAME_FLAG_REPLACE_EXISTING , err);
+    if (dbus_error_is_set(err)) {
+        std::cerr << "- " << err->name << " " << err->message << std::endl;
+        exit(-6);
+    }
+
+    DBusObjectPathVTable vtable = {
+        nullptr,
+        &greeting_handler,
+        NULL, NULL, NULL, NULL
+    };
+    if (!dbus_connection_register_object_path(conn, "/com/commandus/greeting", &vtable, nullptr)) {
+        fprintf(stderr, "Failed to register object path.\n");
+        std::cerr << "Failed to register object path" << std::endl;
+        return -1;
+    }
+
+    dbus_connection_flush(conn);
+
+    while (true) {
+        // non blocking read of the next available message
+        dbus_connection_read_write(conn, 0);
+        DBusMessage *msg = dbus_connection_pop_message(conn);
+    }
+
+    /*
+    mainloop = g_main_loop_new(NULL, false);
+    // Set up the DBus connection to work in a GLib event loop
+    dbus_connection_setup_with_g_main(conn, NULL);
+    // Start the glib event loop
+    g_main_loop_run(mainloop);
+    */
+
+    return 0;
+}
+
+static int exposeMethod2(
     DBusConnection *conn,
     DBusError *err
 ) {
