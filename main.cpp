@@ -208,14 +208,14 @@ static int exposeMethod(
     }
 
 
+    /*
     dbus_bus_add_match(conn, "type='method_call',interface='com.commandus.greeting',member='hello'", err);
-
     if (dbus_error_is_set(err)) {
         std::cerr << "-- " << err->name << " " << err->message << std::endl;
         exit(-6);
     }
+    */
 
-    // path='/',destination='my.service'",
     dbus_connection_flush(conn);
 
     while (true) {
@@ -230,8 +230,19 @@ static int exposeMethod(
         }
 
         // check this is a method call for the right interface and method
-        if (dbus_message_is_method_call(msg, "com.commandus.greeting", "hello"))
+        if (dbus_message_is_method_call(msg, "com.commandus.greeting", "hello")) {
             reply_to_method_call_1(msg, conn);
+        }
+        if (dbus_message_is_method_call(msg, DBUS_INTERFACE_INTROSPECTABLE, "Introspect")) {
+            std::cout << "Introspect " << std::endl;
+            auto reply = dbus_message_new_method_return(msg);
+            dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
+            if (!dbus_connection_send(conn, reply, nullptr)) {
+            }
+            dbus_connection_flush(conn);
+            // free the reply
+            dbus_message_unref(reply);
+        }
        // free the message
         dbus_message_unref(msg);
     }
