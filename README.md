@@ -158,4 +158,5 @@ journalctl -u dbus
 
 ## References
 
+- [Offering own services](https://www.gnu.org/software/emacs/manual/html_node/dbus/Register-Objects.html)
 - [Matthew Johnson. Using the DBUS C API](http://www.matthew.ath.cx/misc/dbus)

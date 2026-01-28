@@ -143,16 +143,40 @@ void reply_to_method_call_1(
     dbus_message_unref(reply);
 }
 
+static DBusHandlerResult greeting_handler(
+    DBusConnection *connection,
+    DBusMessage *message,
+    void *user_data
+) {
+    if (dbus_message_is_method_call(message, "com.commandus.greeting", "hello")) {
+        std::cerr << "hello() call received" << std::endl;
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    // if (dbus_message_is_signal())
+    return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+}
+
 static int exposeMethod(
     DBusConnection *conn,
     DBusError *err
 ) {
-    std::cerr << "--(" << std::endl;
     dbus_bus_request_name(conn, "com.commandus.greeting", DBUS_NAME_FLAG_REPLACE_EXISTING , err);
     if (dbus_error_is_set(err)) {
         std::cerr << "- " << err->name << " " << err->message << std::endl;
         exit(-6);
     }
+
+    DBusObjectPathVTable vtable = {
+        nullptr,
+        &greeting_handler,
+        NULL, NULL, NULL, NULL
+    };
+    if (!dbus_connection_register_object_path(conn, "/com/commandus/greeting", &vtable, nullptr)) {
+        fprintf(stderr, "Failed to register object path.\n");
+        std::cerr << "Failed to register object path" << std::endl;
+        return 1;
+    }
+
 
     dbus_bus_add_match(conn, "type='method_call',interface='com.commandus.greeting',member='hello'", err);
 
