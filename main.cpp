@@ -143,16 +143,44 @@ void reply_to_method_call_1(
     dbus_message_unref(reply);
 }
 
+static const char *server_introspection_xml = {
+    "<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="com.commandus.greeting">
+    <method name="hello">
+        <arg name="your_name" direction="in" type="s"/>
+    </method>
+    </interface>
+</node>"
+};
+
 static DBusHandlerResult greeting_handler(
     DBusConnection *connection,
     DBusMessage *message,
     void *user_data
 ) {
+    DBusMessage *reply = nullptr;
     if (dbus_message_is_method_call(message, "com.commandus.greeting", "hello")) {
         std::cerr << "hello() call received" << std::endl;
+        reply = dbus_message_new_method_return(message);
+        if (!reply)
+            return DBUS_HANDLER_RESULT_NEED_MEMORY;
+        const char *r = "hi";
+        dbus_message_append_args(reply, DBUS_TYPE_STRING, &r, DBUS_TYPE_INVALID);
         return DBUS_HANDLER_RESULT_HANDLED;
     }
-    // if (dbus_message_is_signal())
+
+    if (dbus_message_is_method_call(message, DBUS_INTERFACE_INTROSPECTABLE, "Introspect")) {
+		if (reply = dbus_message_new_method_return(message)) {
+		    dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
+        }
+
+	} 
+    if (!dbus_connection_send(conn, reply, NULL)) {
+	    result = DBUS_HANDLER_RESULT_NEED_MEMORY;
+	    dbus_message_unref(reply);
+    }
+
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 

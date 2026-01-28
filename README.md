@@ -138,7 +138,6 @@ Enter
     <interface name="com.commandus.greeting">
     <method name="hello">
         <arg name="your_name" direction="in" type="s"/>
-        <arg name="greeting" direction="out" type="s"/>
     </method>
     </interface>
 </node>
