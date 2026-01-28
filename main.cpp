@@ -144,18 +144,18 @@ void reply_to_method_call_1(
 }
 
 static const char *server_introspection_xml = {
-    "<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
-<node>
-    <interface name="com.commandus.greeting">
-    <method name="hello">
-        <arg name="your_name" direction="in" type="s"/>
-    </method>
-    </interface>
-</node>"
+    "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n"
+    "<node>\n"
+    "    <interface name=\"com.commandus.greeting\">\n"
+    "    <method name=\"hello\">\n"
+    "        <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
+    "    </method>\n"
+    "    </interface>\n"
+    "</node>"
 };
 
 static DBusHandlerResult greeting_handler(
-    DBusConnection *connection,
+    DBusConnection *conn,
     DBusMessage *message,
     void *user_data
 ) {
@@ -175,12 +175,13 @@ static DBusHandlerResult greeting_handler(
 		    dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
         }
 
-	} 
-    if (!dbus_connection_send(conn, reply, NULL)) {
-	    result = DBUS_HANDLER_RESULT_NEED_MEMORY;
-	    dbus_message_unref(reply);
+	}
+    if (reply) {
+        bool rr = dbus_connection_send(conn, reply, NULL);
+        dbus_message_unref(reply);
+        if (!rr)
+            return DBUS_HANDLER_RESULT_NEED_MEMORY;
     }
-
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
