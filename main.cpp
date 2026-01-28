@@ -171,6 +171,7 @@ static DBusHandlerResult greeting_handler(
     }
 
     if (dbus_message_is_method_call(message, DBUS_INTERFACE_INTROSPECTABLE, "Introspect")) {
+        std::cerr << "Introspect() call received" << std::endl;
 		if (reply = dbus_message_new_method_return(message)) {
 		    dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
         }

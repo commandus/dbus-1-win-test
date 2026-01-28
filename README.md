@@ -115,7 +115,7 @@ Enter
 Name=com.commandus.greeting
 Interface=com.commandus.greeting
 Exec=/home/andrei/git/dbus-1-win-test/build/dbus-1-win-test
-User=root
+User=andrei
 ```
 
 Restart service:
@@ -157,5 +157,5 @@ journalctl -u dbus
 
 ## References
 
-- [Offering own services](https://www.gnu.org/software/emacs/manual/html_node/dbus/Register-Objects.html)
+- [A sample code illustrating basic use of D-BUS](https://github.com/fbuihuu/samples-dbus/tree/master)
 - [Matthew Johnson. Using the DBUS C API](http://www.matthew.ath.cx/misc/dbus)
