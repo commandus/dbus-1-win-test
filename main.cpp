@@ -196,6 +196,7 @@ static int exposeMethod(
         exit(-6);
     }
 
+    /*
     DBusObjectPathVTable vtable = {
         nullptr,
         &greeting_handler,
@@ -207,8 +208,6 @@ static int exposeMethod(
         return 1;
     }
 
-
-    /*
     dbus_bus_add_match(conn, "type='method_call',interface='com.commandus.greeting',member='hello'", err);
     if (dbus_error_is_set(err)) {
         std::cerr << "-- " << err->name << " " << err->message << std::endl;
@@ -243,7 +242,7 @@ static int exposeMethod(
             // free the reply
             dbus_message_unref(reply);
         }
-       // free the message
+        // free the message
         dbus_message_unref(msg);
     }
 
