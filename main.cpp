@@ -301,7 +301,7 @@ static int exposeMethod2(
 }
 */
 
-static int exposeMethod(
+static int exposeMethod1(
     DBusConnection *conn,
     DBusError *err
 ) {
@@ -332,6 +332,7 @@ static int exposeMethod(
 
     dbus_connection_flush(conn);
 
+
     while (true) {
         // non blocking read of the next available message
         dbus_connection_read_write(conn, 0);
@@ -346,9 +347,11 @@ static int exposeMethod(
         // check this is a method call for the right interface and method
         if (dbus_message_is_method_call(msg, "com.commandus.greeting", "hello")) {
             reply_to_method_call_1(msg, conn);
+            dbus_message_unref(msg);
+            return DBUS_HANDLER_RESULT_HANDLED;
         }
-        DBusMessage *reply;
 
+        DBusMessage *reply = nullptr;
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_INTROSPECTABLE, "Introspect")) {
             std::cout << "Introspect " << std::endl;
             reply = dbus_message_new_method_return(msg);
@@ -414,7 +417,7 @@ int main() {
     // callMethod(dbus_conn, &dbus_error);
     // receiveSignals(dbus_conn, &dbus_error);
     // sendSignal(dbus_conn, &dbus_error);
-    exposeMethod(dbus_conn, &dbus_error);
+    exposeMethod1(dbus_conn, &dbus_error);
 
     // Applications must not close shared connections -see dbus_connection_close() docs. This is a bug in the application.
     // dbus_connection_close(dbus_conn);
