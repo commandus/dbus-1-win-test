@@ -64,11 +64,31 @@ sendSignal(dbus_conn, &dbus_error);
 
 ### Check method expose
 
+Check tree
+
+```shell
+busctl tree com.commandus.greeting
+```
+
+```shell
+busctl introspect com.commandus.greeting /com/commandus/greeting
+NAME                   TYPE      SIGNATURE RESULT/VALUE FLAGS
+com.commandus.greeting interface -         -            -
+.hello                 method    s         -            -
+```
 
 Call method from the console:
 
+Does not work
+
 ```shell
 dbus-send --system --print-reply --type=method_call /com/example/Object com.commandus.greeting.hello string:"hello world"
+```
+
+Works
+
+```shell
+busctl call com.commandus.greeting /com/commandus/greeting com.commandus.greeting hello s "color"
 ```
 
 ### Assign access rights to the service
@@ -146,13 +166,19 @@ Enter
 Restart service:
 
 ```shell
-sudo systemctl restart dbus
+%
 ```
 
 ## Read D-Bus log
 
 ```shell
 journalctl -u dbus
+```
+
+## Code generation
+
+```shell
+gdbus-codegen --generate-c-code gen-greeting --c-namespace greetingApp --interface-prefix com.commandus. /usr/share/dbus-1/interfaces/com.commandus.greeting.xml
 ```
 
 ## References

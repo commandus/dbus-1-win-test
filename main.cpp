@@ -1,5 +1,7 @@
 #include <iostream>
+#include <cstring>
 #include <dbus/dbus.h>
+#include <dbus/dbus-glib-lowlevel.h>
 
 #ifdef _MSC_VER
 #include <Windows.h>
@@ -149,6 +151,7 @@ static const char *server_introspection_xml = {
     "    <interface name=\"com.commandus.greeting\">\n"
     "    <method name=\"hello\">\n"
     "        <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
+    "        <arg name=\"retval\" direction=\"out\" type=\"s\"/>\n"
     "    </method>\n"
     "    </interface>\n"
     "</node>"
@@ -214,11 +217,19 @@ static DBusHandlerResult greeting_handler(
     DBusMessage *reply = nullptr;
     if (dbus_message_is_method_call(message, "com.commandus.greeting", "hello")) {
         std::cerr << "hello() call received" << std::endl;
+        const char *g;
+        DBusError err;
+        dbus_error_init(&err);
+        if (!dbus_message_get_args(message, &err, DBUS_TYPE_STRING, &g, DBUS_TYPE_INVALID))
+			return DBUS_HANDLER_RESULT_NEED_MEMORY;
+        std::cerr << "hello param " << g << std::endl;
         reply = dbus_message_new_method_return(message);
         if (!reply)
             return DBUS_HANDLER_RESULT_NEED_MEMORY;
         const char *r = "hi";
         dbus_message_append_args(reply, DBUS_TYPE_STRING, &r, DBUS_TYPE_INVALID);
+      	if (!dbus_connection_send(conn, reply, NULL))
+		    return DBUS_HANDLER_RESULT_NEED_MEMORY;
         return DBUS_HANDLER_RESULT_HANDLED;
     }
 
@@ -279,19 +290,11 @@ static int exposeMethod(
 
     dbus_connection_flush(conn);
 
-    while (true) {
-        // non blocking read of the next available message
-        dbus_connection_read_write(conn, 0);
-        DBusMessage *msg = dbus_connection_pop_message(conn);
-    }
-
-    /*
-    mainloop = g_main_loop_new(NULL, false);
+    GMainLoop *mainloop = g_main_loop_new(NULL, false);
     // Set up the DBus connection to work in a GLib event loop
     dbus_connection_setup_with_g_main(conn, NULL);
     // Start the glib event loop
     g_main_loop_run(mainloop);
-    */
 
     return 0;
 }
