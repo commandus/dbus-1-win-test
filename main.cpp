@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <dbus/dbus.h>
-#include <dbus/dbus-glib-lowlevel.h>
+// #include <dbus/dbus-glib-lowlevel.h>
 
 #ifdef _MSC_VER
 #include <Windows.h>
@@ -267,7 +267,8 @@ static DBusHandlerResult greeting_handler(
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
-static int exposeMethod(
+/*
+static int exposeMethod2(
     DBusConnection *conn,
     DBusError *err
 ) {
@@ -298,8 +299,9 @@ static int exposeMethod(
 
     return 0;
 }
+*/
 
-static int exposeMethod2(
+static int exposeMethod(
     DBusConnection *conn,
     DBusError *err
 ) {
@@ -345,15 +347,43 @@ static int exposeMethod2(
         if (dbus_message_is_method_call(msg, "com.commandus.greeting", "hello")) {
             reply_to_method_call_1(msg, conn);
         }
+        DBusMessage *reply;
+
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_INTROSPECTABLE, "Introspect")) {
             std::cout << "Introspect " << std::endl;
-            auto reply = dbus_message_new_method_return(msg);
+            reply = dbus_message_new_method_return(msg);
             dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
             if (!dbus_connection_send(conn, reply, nullptr)) {
             }
             dbus_connection_flush(conn);
             // free the reply
             dbus_message_unref(reply);
+        }
+
+        if (dbus_message_is_method_call(msg, DBUS_INTERFACE_PROPERTIES, "Get")) {
+            DBusError err;
+            dbus_error_init(&err);
+            const char *intface, *property;
+            if (!dbus_message_get_args(msg, &err, DBUS_TYPE_STRING, &intface, DBUS_TYPE_STRING, &property, DBUS_TYPE_INVALID)) {
+            }
+            if (!(reply = dbus_message_new_method_return(msg))) {
+            }
+            auto result = server_get_properties_handler(property, conn, reply);
+            dbus_message_unref(reply);
+            return result;
+        }
+        if (dbus_message_is_method_call(msg, DBUS_INTERFACE_PROPERTIES, "GetAll")) {
+            if (!(reply = dbus_message_new_method_return(msg))) {
+            }
+            auto result = server_get_all_properties_handler(conn, reply);
+            dbus_message_unref(reply);
+            return result;
+        }
+        if (reply) {
+            bool rr = dbus_connection_send(conn, reply, NULL);
+            dbus_message_unref(reply);
+            if (!rr)
+                return DBUS_HANDLER_RESULT_NEED_MEMORY;
         }
         // free the message
         dbus_message_unref(msg);
