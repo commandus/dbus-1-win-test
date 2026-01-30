@@ -212,3 +212,9 @@ gdbus-codegen --generate-c-code gen-greeting --c-namespace greetingApp --interfa
 - [Windows D-bus binary](https://github.com/WangTingMan/WinDbusBinary)
 - [A sample code illustrating basic use of D-BUS](https://github.com/fbuihuu/samples-dbus/tree/master)
 - [Matthew Johnson. Using the DBUS C API](http://www.matthew.ath.cx/misc/dbus)
+
+## License
+
+MIT License(see LICENSE file).
+
+Copyright (C) 2026 Andrei Ivanov. All rights reserved.

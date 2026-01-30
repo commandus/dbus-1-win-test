@@ -1,3 +1,8 @@
+/**
+ * D-Bus low-level example
+ * MIT License(see LICENSE file).
+ * Copyright (C) 2026 Andrei Ivanov. All rights reserved.
+ */
 #include <iostream>
 #include <cstring>
 #include <dbus/dbus.h>
