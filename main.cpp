@@ -143,8 +143,6 @@ static const char *server_introspection_xml = {
     "            <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
     "            <arg name=\"retval\" direction=\"out\" type=\"s\"/>\n"
     "        </method>\n"
-    "        <property name=\"Version\" type=\"s\" access=\"read\">\n"
-    "        </property>"
     "    </interface>\n"
     "</node>"
 };
@@ -214,7 +212,6 @@ static int exposeMethod1(
             if (!(reply = dbus_message_new_method_return(msg))) {
             }
             reply_to_method_call_1(msg, conn, reply);
-            dbus_message_unref(msg);
         }
 
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_INTROSPECTABLE, "Introspect")) {
