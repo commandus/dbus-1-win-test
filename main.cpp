@@ -137,7 +137,7 @@ void reply_to_method_call_1(
 
 static const char *server_introspection_xml = {
     "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n"
-    "<node>\n"
+    "<node xmlns:doc=\"http://www.freedesktop.org/dbus/1.0/doc.dtd\">\n"
     "    <interface name=\"com.commandus.greeting\">\n"
     "        <method name=\"hello\">\n"
     "            <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
