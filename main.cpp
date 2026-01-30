@@ -143,7 +143,7 @@ static const char *server_introspection_xml = {
     "            <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
     "            <arg name=\"retval\" direction=\"out\" type=\"s\"/>\n"
     "        </method>\n"
-    "        <property name=\"Version\" type=\"s\" access=\"readwrite\" />\n"
+    "        <property name=\"Version\" type=\"s\" access=\"read\" />\n"
     "    </interface>\n"
     "</node>"
 };
