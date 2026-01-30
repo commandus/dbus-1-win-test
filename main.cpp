@@ -143,6 +143,8 @@ static const char *server_introspection_xml = {
     "            <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
     "            <arg name=\"retval\" direction=\"out\" type=\"s\"/>\n"
     "        </method>\n"
+    "        <property name=\"Version\" type=\"s\" access=\"read\">\n"
+    "        </property>\n"
     "    </interface>\n"
     "</node>"
 };
@@ -222,6 +224,7 @@ static int exposeMethod1(
         }
 
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_PROPERTIES, "Get")) {
+            std::cout << "Get properties" << std::endl;
             const char *intface, *property;
             if (!dbus_message_get_args(msg, err, DBUS_TYPE_STRING, &intface, DBUS_TYPE_STRING, &property, DBUS_TYPE_INVALID)) {
             }
@@ -233,6 +236,7 @@ static int exposeMethod1(
             }
         }
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_PROPERTIES, "GetAll")) {
+            std::cout << "Get all properties" << std::endl;
             if (!(reply = dbus_message_new_method_return(msg))) {
             }
             auto result = server_get_all_properties_handler(conn, reply);
