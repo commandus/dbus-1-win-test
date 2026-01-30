@@ -86,10 +86,11 @@ NAME                   TYPE      SIGNATURE RESULT/VALUE FLAGS
 com.commandus.greeting interface -         -            -
 .hello                 method    s         s            -
 .Version               property  s         "0.01"       emits-change writable```
-
+```
+`
 Call method from the console:
 
-Does not work
+Does not work:
 
 ```shell
 dbus-send --system --print-reply --type=method_call /com/example/Object com.commandus.greeting.hello string:"hello world"
