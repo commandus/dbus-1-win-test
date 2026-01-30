@@ -115,7 +115,8 @@ static int receiveSignals(
 
 void reply_to_method_call_1(
     DBusMessage* msg,
-    DBusConnection* conn
+    DBusConnection* conn,
+    DBusMessage* reply
 )
 {
     char* param = nullptr;
@@ -126,35 +127,24 @@ void reply_to_method_call_1(
         if (dbus_message_iter_get_arg_type(&args) == DBUS_TYPE_STRING)
             dbus_message_iter_get_basic(&args, &param);
 
-    // create a reply from the message
-    DBusMessage* reply = dbus_message_new_method_return(msg);
-
     // add the arguments to the reply
     dbus_message_iter_init_append(reply, &args);
     const char *answer = "World";
     if (!dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &answer)) {
         exit(1);
     }
-    // send the reply && flush the connection
-    dbus_uint32_t serial = 0;
-    if (!dbus_connection_send(conn, reply, &serial)) {
-        exit(1);
-    }
-    dbus_connection_flush(conn);
-    // free the reply
-    dbus_message_unref(reply);
 }
 
 static const char *server_introspection_xml = {
     "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n"
     "<node>\n"
     "    <interface name=\"com.commandus.greeting\">\n"
-    "    <method name=\"hello\">\n"
-    "        <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
-    "        <arg name=\"retval\" direction=\"out\" type=\"s\"/>\n"
-    "    </method>\n"
-    "    <property name=\"Version\" type=\"s\" access=\"read\">\n"
-    "     </property>"
+    "        <method name=\"hello\">\n"
+    "            <arg name=\"your_name\" direction=\"in\" type=\"s\"/>\n"
+    "            <arg name=\"retval\" direction=\"out\" type=\"s\"/>\n"
+    "        </method>\n"
+    "        <property name=\"Version\" type=\"s\" access=\"read\">\n"
+    "        </property>"
     "    </interface>\n"
     "</node>"
 };
@@ -170,9 +160,6 @@ static DBusHandlerResult server_get_properties_handler(
         dbus_message_append_args(reply, DBUS_TYPE_STRING, &version, DBUS_TYPE_INVALID);
     else
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-
-    if (!dbus_connection_send(conn, reply, nullptr))
-        return DBUS_HANDLER_RESULT_NEED_MEMORY;
     return DBUS_HANDLER_RESULT_HANDLED;
 }
 
@@ -197,12 +184,8 @@ static DBusHandlerResult server_get_all_properties_handler(
     dbus_message_iter_append_basic(&variant, DBUS_TYPE_STRING, &version);
     dbus_message_iter_close_container(&dict, &variant);
     dbus_message_iter_close_container(&array, &dict);
-
     dbus_message_iter_close_container(&iter, &array);
-
-    if (dbus_connection_send(conn, reply, nullptr))
-        result = DBUS_HANDLER_RESULT_HANDLED;
-    return result;
+    return DBUS_HANDLER_RESULT_HANDLED;
 }
 
 static int exposeMethod1(
@@ -224,24 +207,21 @@ static int exposeMethod1(
             sleep(1);
             continue;
         }
+        DBusMessage *reply = nullptr;
 
         // check this is a method call for the right interface and method
         if (dbus_message_is_method_call(msg, DBUS_INTF_NAME, "hello")) {
-            reply_to_method_call_1(msg, conn);
+            if (!(reply = dbus_message_new_method_return(msg))) {
+            }
+            reply_to_method_call_1(msg, conn, reply);
             dbus_message_unref(msg);
-            return DBUS_HANDLER_RESULT_HANDLED;
         }
 
-        DBusMessage *reply = nullptr;
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_INTROSPECTABLE, "Introspect")) {
             std::cout << "Introspect " << std::endl;
-            reply = dbus_message_new_method_return(msg);
-            dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
-            if (!dbus_connection_send(conn, reply, nullptr)) {
+            if (!(reply = dbus_message_new_method_return(msg))) {
             }
-            dbus_connection_flush(conn);
-            // free the reply
-            dbus_message_unref(reply);
+            dbus_message_append_args(reply, DBUS_TYPE_STRING, &server_introspection_xml, DBUS_TYPE_INVALID);
         }
 
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_PROPERTIES, "Get")) {
@@ -251,15 +231,17 @@ static int exposeMethod1(
             if (!(reply = dbus_message_new_method_return(msg))) {
             }
             auto result = server_get_properties_handler(property, conn, reply);
-            dbus_message_unref(reply);
-            return result;
+            if (result != DBUS_HANDLER_RESULT_HANDLED) {
+
+            }
         }
         if (dbus_message_is_method_call(msg, DBUS_INTERFACE_PROPERTIES, "GetAll")) {
             if (!(reply = dbus_message_new_method_return(msg))) {
             }
             auto result = server_get_all_properties_handler(conn, reply);
-            dbus_message_unref(reply);
-            return result;
+            if (result !=DBUS_HANDLER_RESULT_HANDLED) {
+
+            }
         }
         if (reply) {
             bool rr = dbus_connection_send(conn, reply, nullptr);
