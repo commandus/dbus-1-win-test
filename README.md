@@ -156,11 +156,11 @@ Enter
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
     <interface name="com.commandus.greeting">
-    <method name="hello">
-        <arg name="your_name" direction="in" type="s"/>
-    </method>
-    <property name="Version" type="s" access="read">
-    </property>
+        <method name="hello">
+            <arg name="your_name" direction="in" type="s"/>
+        </method>
+        <property name="Version" type="s" access="read">
+        </property>
     </interface>
 </node>
 ```
