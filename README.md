@@ -108,7 +108,7 @@ Enter
 <!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
 <busconfig>
   <policy user="root">
-    <allow own="org.freedesktop.PackageKit"/>
+    <allow own="com.commandus.greeting"/>
   </policy>
   <policy context="default">
     <allow send_destination="com.commandus.greeting" send_interface="com.commandus.greeting"/>
@@ -159,6 +159,8 @@ Enter
     <method name="hello">
         <arg name="your_name" direction="in" type="s"/>
     </method>
+    <property name="Version" type="s" access="read">
+    </property>
     </interface>
 </node>
 ```
