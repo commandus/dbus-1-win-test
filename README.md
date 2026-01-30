@@ -154,6 +154,7 @@ Enter path to the executable in the configuration file com.commandus.greeting.se
 
 ```
 [D-BUS Service]
+
 Name=com.commandus.greeting
 Interface=com.commandus.greeting
 Exec=/home/andrei/git/dbus-1-win-test/build/dbus-1-win-test
@@ -174,7 +175,7 @@ sudo vi /usr/share/dbus-1/interfaces/com.commandus.greeting.xml
 
 Enter
 
-```
+```xml
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
     <interface name="com.commandus.greeting">
