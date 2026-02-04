@@ -215,6 +215,6 @@ gdbus-codegen --generate-c-code gen-greeting --c-namespace greetingApp --interfa
 
 ## License
 
-MIT License(see LICENSE file).
+MIT License(see [LICENSE](LICENSE) file).
 
 Copyright (C) 2026 Andrei Ivanov. All rights reserved.

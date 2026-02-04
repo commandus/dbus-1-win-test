@@ -118,6 +118,38 @@ static int receiveSignals(
     return 0;
 }
 
+static int receiveBluetoothSignals(
+    DBusConnection *conn,
+    DBusError *err
+) {
+    dbus_bus_add_match(conn, "type='signal',interface='org.freedesktop.DBus.ObjectManager',member='InterfacesAdded'", err);
+    dbus_connection_flush(conn);
+
+    while (1) {
+        dbus_connection_read_write(conn, 0);
+        DBusMessage *msg = dbus_connection_pop_message(conn);
+
+        if (!msg) {
+            sleep(1);
+            continue;
+        }
+
+        if (dbus_message_is_signal(msg, "org.freedesktop.DBus.ObjectManager", "InterfacesAdded")) {
+            DBusMessageIter args;
+            std::cout << "Interface added'\n";
+            if (!dbus_message_iter_init(msg, &args)) {
+
+            } else if (dbus_message_iter_get_arg_type(&args) == DBUS_TYPE_STRING) {
+                char *value;
+                dbus_message_iter_get_basic(&args, &value);
+                std::cout <<  "string: " << value << std::endl;
+            }
+        }
+        dbus_message_unref(msg);
+    }
+    return 0;
+}
+
 void reply_to_method_call_1(
     DBusMessage* msg,
     DBusConnection* conn,
