@@ -1,1 +1,442 @@
-TODO
+
+Example of dbus-monitor --system:
+
+
+signal time=1770181323.689580 sender=:1.5 -> destination=(null destination) serial=306 path=/org/bluez/hci1; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.bluez.Adapter1"
+   array [
+      dict entry(
+         string "Class"
+         variant             uint32 8126724
+      )
+   ]
+   array [
+   ]
+signal time=1770181323.693740 sender=:1.5 -> destination=(null destination) serial=307 path=/org/bluez/hci1; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.bluez.Adapter1"
+   array [
+      dict entry(
+         string "Powered"
+         variant             boolean true
+      )
+   ]
+   array [
+   ]
+signal time=1770181323.699536 sender=:1.5 -> destination=(null destination) serial=309 path=/org/bluez/hci1; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.bluez.Adapter1"
+   array [
+      dict entry(
+         string "Discoverable"
+         variant             boolean true
+      )
+   ]
+   array [
+   ]
+signal time=1770181323.703664 sender=:1.5 -> destination=(null destination) serial=311 path=/org/bluez/hci1; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.bluez.Adapter1"
+   array [
+      dict entry(
+         string "Discovering"
+         variant             boolean true
+      )
+   ]
+   array [
+   ]
+signal time=1770181323.872698 sender=:1.5 -> destination=(null destination) serial=312 path=/; interface=org.freedesktop.DBus.ObjectManager; member=InterfacesAdded
+   object path "/org/bluez/hci1/dev_FF_FF_92_13_76_14"
+   array [
+      dict entry(
+         string "org.freedesktop.DBus.Introspectable"
+         array [
+         ]
+      )
+      dict entry(
+         string "org.bluez.Device1"
+         array [
+            dict entry(
+               string "Address"
+               variant                   string "FF:FF:92:13:76:14"
+            )
+            dict entry(
+               string "AddressType"
+               variant                   string "public"
+            )
+            dict entry(
+               string "Name"
+               variant                   string "NEMR92137614"
+            )
+            dict entry(
+               string "Alias"
+               variant                   string "NEMR92137614"
+            )
+            dict entry(
+               string "Paired"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Bonded"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Trusted"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Blocked"
+               variant                   boolean false
+            )
+            dict entry(
+               string "LegacyPairing"
+               variant                   boolean false
+            )
+            dict entry(
+               string "RSSI"
+               variant                   int16 -66
+            )
+            dict entry(
+               string "Connected"
+               variant                   boolean false
+            )
+            dict entry(
+               string "UUIDs"
+               variant                   array [
+                     string "0000fef0-0000-1000-8000-00805f9b34fb"
+                  ]
+            )
+            dict entry(
+               string "Adapter"
+               variant                   object path "/org/bluez/hci1"
+            )
+            dict entry(
+               string "ManufacturerData"
+               variant                   array [
+                     dict entry(
+                        uint16 20563
+                        variant                            array of bytes [
+                              0b 1c 81 01 41
+                           ]
+                     )
+                  ]
+            )
+            dict entry(
+               string "TxPower"
+               variant                   int16 3
+            )
+            dict entry(
+               string "ServicesResolved"
+               variant                   boolean false
+            )
+         ]
+      )
+      dict entry(
+         string "org.freedesktop.DBus.Properties"
+         array [
+         ]
+      )
+   ]
+signal time=1770181323.986018 sender=:1.5 -> destination=(null destination) serial=313 path=/; interface=org.freedesktop.DBus.ObjectManager; member=InterfacesAdded
+   object path "/org/bluez/hci1/dev_2B_C4_8B_E6_1D_BD"
+   array [
+      dict entry(
+         string "org.freedesktop.DBus.Introspectable"
+         array [
+         ]
+      )
+      dict entry(
+         string "org.bluez.Device1"
+         array [
+            dict entry(
+               string "Address"
+               variant                   string "2B:C4:8B:E6:1D:BD"
+            )
+            dict entry(
+               string "AddressType"
+               variant                   string "random"
+            )
+            dict entry(
+               string "Alias"
+               variant                   string "2B-C4-8B-E6-1D-BD"
+            )
+            dict entry(
+               string "Paired"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Bonded"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Trusted"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Blocked"
+               variant                   boolean false
+            )
+            dict entry(
+               string "LegacyPairing"
+               variant                   boolean false
+            )
+            dict entry(
+               string "RSSI"
+               variant                   int16 -82
+            )
+            dict entry(
+               string "Connected"
+               variant                   boolean false
+            )
+            dict entry(
+               string "UUIDs"
+               variant                   array [
+                     string "0000fcf1-0000-1000-8000-00805f9b34fb"
+                  ]
+            )
+            dict entry(
+               string "Adapter"
+               variant                   object path "/org/bluez/hci1"
+            )
+            dict entry(
+               string "ServiceData"
+               variant                   array [
+                     dict entry(
+                        string "0000fcf1-0000-1000-8000-00805f9b34fb"
+                        variant                            array of bytes [
+                              04 81 06 04 17 66 3e cc ba a9 b6 e9 ba 53 71 f0
+                              40 f4 59 85 23 f4
+                           ]
+                     )
+                  ]
+            )
+            dict entry(
+               string "ServicesResolved"
+               variant                   boolean false
+            )
+         ]
+      )
+      dict entry(
+         string "org.freedesktop.DBus.Properties"
+         array [
+         ]
+      )
+   ]
+signal time=1770181324.401152 sender=:1.5 -> destination=(null destination) serial=314 path=/; interface=org.freedesktop.DBus.ObjectManager; member=InterfacesAdded
+   object path "/org/bluez/hci1/dev_C5_F8_FB_D2_7A_71"
+   array [
+      dict entry(
+         string "org.freedesktop.DBus.Introspectable"
+         array [
+         ]
+      )
+      dict entry(
+         string "org.bluez.Device1"
+         array [
+            dict entry(
+               string "Address"
+               variant                   string "C5:F8:FB:D2:7A:71"
+            )
+            dict entry(
+               string "AddressType"
+               variant                   string "random"
+            )
+            dict entry(
+               string "Name"
+               variant                   string "Meshtastic_7a71"
+            )
+            dict entry(
+               string "Alias"
+               variant                   string "Meshtastic_7a71"
+            )
+            dict entry(
+               string "Paired"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Bonded"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Trusted"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Blocked"
+               variant                   boolean false
+            )
+            dict entry(
+               string "LegacyPairing"
+               variant                   boolean false
+            )
+            dict entry(
+               string "RSSI"
+               variant                   int16 -80
+            )
+            dict entry(
+               string "Connected"
+               variant                   boolean false
+            )
+            dict entry(
+               string "UUIDs"
+               variant                   array [
+                     string "6ba1b218-15a8-461f-9fa8-5dcae273eafd"
+                  ]
+            )
+            dict entry(
+               string "Adapter"
+               variant                   object path "/org/bluez/hci1"
+            )
+            dict entry(
+               string "TxPower"
+               variant                   int16 0
+            )
+            dict entry(
+               string "ServicesResolved"
+               variant                   boolean false
+            )
+         ]
+      )
+      dict entry(
+         string "org.freedesktop.DBus.Properties"
+         array [
+         ]
+      )
+   ]
+signal time=1770181325.365350 sender=:1.5 -> destination=(null destination) serial=315 path=/; interface=org.freedesktop.DBus.ObjectManager; member=InterfacesAdded
+   object path "/org/bluez/hci1/dev_1C_CC_D6_3E_D9_F8"
+   array [
+      dict entry(
+         string "org.freedesktop.DBus.Introspectable"
+         array [
+         ]
+      )
+      dict entry(
+         string "org.bluez.Device1"
+         array [
+            dict entry(
+               string "Address"
+               variant                   string "1C:CC:D6:3E:D9:F8"
+            )
+            dict entry(
+               string "AddressType"
+               variant                   string "public"
+            )
+            dict entry(
+               string "Name"
+               variant                   string "Android Bluedroid"
+            )
+            dict entry(
+               string "Alias"
+               variant                   string "Android Bluedroid"
+            )
+            dict entry(
+               string "Class"
+               variant                   uint32 5898764
+            )
+            dict entry(
+               string "Icon"
+               variant                   string "phone"
+            )
+            dict entry(
+               string "Paired"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Bonded"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Trusted"
+               variant                   boolean false
+            )
+            dict entry(
+               string "Blocked"
+               variant                   boolean false
+            )
+            dict entry(
+               string "LegacyPairing"
+               variant                   boolean true
+            )
+            dict entry(
+               string "RSSI"
+               variant                   int16 -84
+            )
+            dict entry(
+               string "Connected"
+               variant                   boolean false
+            )
+            dict entry(
+               string "UUIDs"
+               variant                   array [
+                  ]
+            )
+            dict entry(
+               string "Adapter"
+               variant                   object path "/org/bluez/hci1"
+            )
+            dict entry(
+               string "ServicesResolved"
+               variant                   boolean false
+            )
+         ]
+      )
+      dict entry(
+         string "org.freedesktop.DBus.Properties"
+         array [
+         ]
+      )
+   ]
+signal time=1770181327.225180 sender=:1.5 -> destination=(null destination) serial=316 path=/; interface=org.freedesktop.DBus.ObjectManager; member=InterfacesAdded
+   object path "/org/bluez/hci1/dev_1C_CC_D6_3E_D9_F8"
+   array [
+      dict entry(
+         string "org.bluez.Network1"
+         array [
+            dict entry(
+               string "Connected"
+               variant                   boolean false
+            )
+         ]
+      )
+      dict entry(
+         string "org.bluez.MediaControl1"
+         array [
+            dict entry(
+               string "Connected"
+               variant                   boolean false
+            )
+         ]
+      )
+   ]
+signal time=1770181327.226309 sender=:1.5 -> destination=(null destination) serial=317 path=/org/bluez/hci1/dev_1C_CC_D6_3E_D9_F8; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.bluez.Device1"
+   array [
+      dict entry(
+         string "UUIDs"
+         variant             array [
+               string "00001105-0000-1000-8000-00805f9b34fb"
+               string "0000110a-0000-1000-8000-00805f9b34fb"
+               string "0000110c-0000-1000-8000-00805f9b34fb"
+               string "0000110e-0000-1000-8000-00805f9b34fb"
+               string "00001112-0000-1000-8000-00805f9b34fb"
+               string "00001115-0000-1000-8000-00805f9b34fb"
+               string "00001116-0000-1000-8000-00805f9b34fb"
+               string "0000111f-0000-1000-8000-00805f9b34fb"
+               string "0000112f-0000-1000-8000-00805f9b34fb"
+               string "00001200-0000-1000-8000-00805f9b34fb"
+               string "00001132-0000-1000-8000-00805f9b34fb"
+               string "00000000-0000-0000-0000-000000000000"
+            ]
+      )
+   ]
+   array [
+   ]
+
+signal time=1770181340.604719 sender=:1.5 -> destination=(null destination) serial=318 path=/org/bluez/hci1/dev_1C_CC_D6_3E_D9_F8; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.bluez.Device1"
+   array [
+      dict entry(
+         string "LegacyPairing"
+         variant             boolean false
+      )
+   ]
+   array [
+   ]
