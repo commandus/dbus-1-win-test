@@ -197,9 +197,12 @@ static int exposeMethod1(
     DBusError *err
 ) {
     dbus_bus_request_name(conn, DBUS_INTF_NAME, DBUS_NAME_FLAG_REPLACE_EXISTING , err);
-    if (dbus_error_is_set(err))
+    if (dbus_error_is_set(err)) {
+        std::cerr << "Error request name  " << DBUS_INTF_NAME << ": " << err->name << " " << err->message << std::endl;
         return -6;
-    dbus_connection_flush(conn);
+    }
+    dbus_connection_flush(
+            conn);
     
     while (true) {
         // non blocking read of the next available message
