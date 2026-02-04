@@ -63,7 +63,7 @@ dbus-send --system --type=signal /com/commandus/greeting com.commandus.greeting.
 Run monitor:
 
 ```shell
-dbus-monitor
+dbus-monitor --system
 ```
 
 Uncomment sendSignal()
