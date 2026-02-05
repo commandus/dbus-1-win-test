@@ -143,6 +143,52 @@ static int receiveSignals(
     return 0;
 }
 
+typedef void (*OnDictEntry)
+(
+    const char *key,
+    DBusMessageIter *val,
+    void *extra
+);
+
+static bool iterateArray(
+    const char *arrayKey,
+    DBusMessageIter *args,
+    OnDictEntry onDictEntry,
+    void *extra
+)
+{
+    DBusMessageIter arrIter;
+    dbus_message_iter_recurse(args, &arrIter);
+
+    while (true) {
+        auto st = dbus_message_iter_get_arg_type(&arrIter);
+        if (st != DBUS_TYPE_DICT_ENTRY)
+            break;
+
+        DBusMessageIter entry;
+        dbus_message_iter_recurse(&arrIter, &entry);
+        if (dbus_message_iter_get_arg_type(&entry) != DBUS_TYPE_STRING)
+            break;
+
+        const char *key;
+        dbus_message_iter_get_basic(&entry, &key);
+        dbus_message_iter_next(&entry);
+        auto dt = dbus_message_iter_get_arg_type(&entry);
+        switch (dt) {
+            case DBUS_TYPE_ARRAY:
+                iterateArray(key, &entry, onDictEntry, extra);
+                break;
+            default:
+                onDictEntry(key, &entry, nullptr);
+                break;
+        }
+
+        if (!dbus_message_iter_next(&arrIter))
+            break;
+    }
+    return true;
+}
+
 static int receiveBluetoothSignals(
     DBusConnection *conn,
     DBusError *err
@@ -150,7 +196,7 @@ static int receiveBluetoothSignals(
     dbus_bus_add_match(conn, "type='signal',interface='org.freedesktop.DBus.ObjectManager',member='InterfacesAdded'", err);
     dbus_connection_flush(conn);
 
-    while (1) {
+    while (true) {
         dbus_connection_read_write(conn, 0);
         DBusMessage *msg = dbus_connection_pop_message(conn);
 
@@ -173,51 +219,33 @@ static int receiveBluetoothSignals(
 
                 auto n = dbus_message_iter_next(&args);
                 if (!n)
-                    break;
-                t = dbus_message_iter_get_arg_type(&args);
-                if (t != DBUS_TYPE_ARRAY) {
                     continue;
-                }
-
-                DBusMessageIter arrIter;
-                dbus_message_iter_recurse(&args, &arrIter);
-
-                while (true) {
-                    auto st = dbus_message_iter_get_arg_type(&arrIter);
-                    if (st != DBUS_TYPE_DICT_ENTRY)
-                        break;
-
-                    DBusMessageIter entry, value;
-
-                    dbus_message_iter_recurse(&arrIter, &entry);
-                    if (dbus_message_iter_get_arg_type(&entry) != DBUS_TYPE_STRING)
-                        break;
-                    const char *key;
-                    dbus_message_iter_get_basic(&entry, &key);
-                    dbus_message_iter_next(&entry);
-                    auto dt = dbus_message_iter_get_arg_type(&entry);
+                t = dbus_message_iter_get_arg_type(&args);
+                if (t != DBUS_TYPE_ARRAY)
+                    continue;
+                iterateArray("", &args, [] (
+                    const char *key,
+                    DBusMessageIter *val,
+                    void *extra
+                ) {
+                    auto dt = dbus_message_iter_get_arg_type(val);
                     switch (dt) {
-                        case DBUS_TYPE_ARRAY:
-                            std::cout << key << " array " << std::endl;
-                            break;
                         case DBUS_TYPE_INT64:
                             int64_t r;
-                            dbus_message_iter_get_basic(&arrIter, &r);
+                            dbus_message_iter_get_basic(val, &r);
                             std::cout << key << " int64 " << r << std::endl;
                             break;
                         case DBUS_TYPE_STRING:
                             char *str;
-                            dbus_message_iter_get_basic(&arrIter, &str);
+                            dbus_message_iter_get_basic(val, &str);
                             std::cout << key << " string " << str << std::endl;
                             break;
+                        case DBUS_TYPE_VARIANT: {
+                        }
                         default:
-                            std::cout << key << " other  " << dt << " " << std::endl;
                             break;
                     }
-                    auto n = dbus_message_iter_next(&arrIter);
-                    if (!n)
-                        break;
-                }
+                }, nullptr);
             }
         }
         dbus_message_unref(msg);
