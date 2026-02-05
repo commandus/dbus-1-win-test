@@ -135,3 +135,17 @@ signal time=1770181323.872698 sender=:1.5 -> destination=(null destination) seri
          ]
       )
    ]
+
+
+/home/andrei/git/dbus-1-win-test/cmake-build-debug/dbus-1-win-test
+Connected to D-Bus as ":1.142".
+Interface added
+Object path /org/bluez/hci0/dev_FF_FF_92_13_76_14
+org.freedesktop.DBus.Introspectable array
+org.bluez.Device1 array
+org.freedesktop.DBus.Properties array
+Interface added
+Object path /org/bluez/hci0/dev_67_36_3B_CA_20_F9
+org.freedesktop.DBus.Introspectable array
+org.bluez.Device1 array
+org.freedesktop.DBus.Properties array

@@ -105,12 +105,37 @@ static int receiveSignals(
         if (dbus_message_is_signal(msg, DBUS_INTF_NAME, "GreetingSignal")) {
             DBusMessageIter args;
             std::cout << "Received signal: 'GreetingSignal'\n";
-            if (!dbus_message_iter_init(msg, &args)) {
+            if (dbus_message_iter_init(msg, &args)) {
+                auto t = dbus_message_iter_get_arg_type(&args);
+                if (t == DBUS_TYPE_STRUCT) {
+                    DBusMessageIter structIter;
+                    dbus_message_iter_recurse(&args, &structIter);
 
-            } else if (dbus_message_iter_get_arg_type(&args) == DBUS_TYPE_STRING) {
-                char *value;
-                dbus_message_iter_get_basic(&args, &value);
-                std::cout <<  "Signal payload (string): " << value << std::endl;
+                    while (true) {
+                        auto st = dbus_message_iter_get_arg_type(&structIter);
+                        switch (st) {
+                            case DBUS_TYPE_ARRAY:
+                                std::cout << "array " << std::endl;
+                                break;
+                            case DBUS_TYPE_INT64:
+                                int64_t r;
+                                dbus_message_iter_get_basic(&structIter, &r);
+                                std::cout << "int64 " << r << std::endl;
+                                break;
+                            case DBUS_TYPE_STRING:
+                                char *str;
+                                dbus_message_iter_get_basic(&structIter, &str);
+                                std::cout << "String " << str << std::endl;
+                                break;
+                            default:
+                                std::cout << "other  " << st << std::endl;
+                                break;
+                        }
+                        auto n = dbus_message_iter_next(&structIter);
+                        if (!n)
+                            break;
+                    }
+                }
             }
         }
         dbus_message_unref(msg);
@@ -136,13 +161,63 @@ static int receiveBluetoothSignals(
 
         if (dbus_message_is_signal(msg, "org.freedesktop.DBus.ObjectManager", "InterfacesAdded")) {
             DBusMessageIter args;
-            std::cout << "Interface added'\n";
-            if (!dbus_message_iter_init(msg, &args)) {
+            std::cout << "Interface added\n";
+            if (dbus_message_iter_init(msg, &args)) {
+                auto t = dbus_message_iter_get_arg_type(&args);
+                if (t != DBUS_TYPE_OBJECT_PATH) {
+                    continue;
+                }
+                char *objectPath;
+                dbus_message_iter_get_basic(&args, &objectPath);
+                std::cout << "Object path " << objectPath << std::endl;
 
-            } else if (dbus_message_iter_get_arg_type(&args) == DBUS_TYPE_STRING) {
-                char *value;
-                dbus_message_iter_get_basic(&args, &value);
-                std::cout <<  "string: " << value << std::endl;
+                auto n = dbus_message_iter_next(&args);
+                if (!n)
+                    break;
+                t = dbus_message_iter_get_arg_type(&args);
+                if (t != DBUS_TYPE_ARRAY) {
+                    continue;
+                }
+
+                DBusMessageIter arrIter;
+                dbus_message_iter_recurse(&args, &arrIter);
+
+                while (true) {
+                    auto st = dbus_message_iter_get_arg_type(&arrIter);
+                    if (st != DBUS_TYPE_DICT_ENTRY)
+                        break;
+
+                    DBusMessageIter entry, value;
+
+                    dbus_message_iter_recurse(&arrIter, &entry);
+                    if (dbus_message_iter_get_arg_type(&entry) != DBUS_TYPE_STRING)
+                        break;
+                    const char *key;
+                    dbus_message_iter_get_basic(&entry, &key);
+                    dbus_message_iter_next(&entry);
+                    auto dt = dbus_message_iter_get_arg_type(&entry);
+                    switch (dt) {
+                        case DBUS_TYPE_ARRAY:
+                            std::cout << key << " array " << std::endl;
+                            break;
+                        case DBUS_TYPE_INT64:
+                            int64_t r;
+                            dbus_message_iter_get_basic(&arrIter, &r);
+                            std::cout << key << " int64 " << r << std::endl;
+                            break;
+                        case DBUS_TYPE_STRING:
+                            char *str;
+                            dbus_message_iter_get_basic(&arrIter, &str);
+                            std::cout << key << " string " << str << std::endl;
+                            break;
+                        default:
+                            std::cout << key << " other  " << dt << " " << std::endl;
+                            break;
+                    }
+                    auto n = dbus_message_iter_next(&arrIter);
+                    if (!n)
+                        break;
+                }
             }
         }
         dbus_message_unref(msg);
@@ -318,7 +393,8 @@ int main() {
     // callMethod(dbus_conn, &dbus_error);
     // receiveSignals(dbus_conn, &dbus_error);
     // sendSignal(dbus_conn, &dbus_error);
-    exposeMethod1(dbus_conn, &dbus_error);
+    // exposeMethod1(dbus_conn, &dbus_error);
+    receiveBluetoothSignals(dbus_conn, &dbus_error);
 
     // Applications must not close shared connections -see dbus_connection_close() docs. This is a bug in the application.
     // dbus_connection_close(dbus_conn);
