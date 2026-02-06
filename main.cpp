@@ -12,6 +12,8 @@
 #define sleep(x) _sleep(x)
 #else
 #include <unistd.h>
+#include <cstdint>
+
 #endif
 
 const char* DBUS_INTF_NAME = "com.commandus.greeting";

@@ -149,3 +149,128 @@ Object path /org/bluez/hci0/dev_67_36_3B_CA_20_F9
 org.freedesktop.DBus.Introspectable array
 org.bluez.Device1 array
 org.freedesktop.DBus.Properties array
+
+
+/home/andrei/git/dbus-1-win-test/cmake-build-debug/dbus-1-win-test
+Connected to D-Bus as ":1.107".
+Interface added
+Object path /org/bluez/hci1
+Address string 8C:88:0B:6A:65:04
+AddressType string public
+Name string lenovo
+Alias string lenovo
+Powered bool false
+Discoverable bool false
+Pairable bool false
+Discovering bool false
+Modalias string usb:v1D6Bp0246d0548
+Version byte 10
+Interface added
+Object path /org/bluez/hci1
+ActiveInstances byte 0
+SupportedInstances byte 4
+Interface added
+Object path /org/bluez/hci1/dev_28_FC_D8_91_48_9E
+Address string 28:FC:D8:91:48:9E
+AddressType string random
+Alias string 28-FC-D8-91-48-9E
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -70
+Connected bool false
+ServicesResolved bool false
+Interface added
+Object path /org/bluez/hci1/dev_72_1A_1B_2A_BE_5C
+Address string 72:1A:1B:2A:BE:5C
+AddressType string random
+Alias string 72-1A-1B-2A-BE-5C
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -80
+Connected bool false
+ServicesResolved bool false
+Interface added
+Object path /org/bluez/hci1/dev_1C_CC_D6_3E_D9_F8
+Address string 1C:CC:D6:3E:D9:F8
+AddressType string public
+Name string Android Bluedroid
+Alias string Android Bluedroid
+Icon string phone
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -78
+Connected bool false
+ServicesResolved bool false
+Connected bool false
+Connected bool false
+Interface added
+Object path /org/bluez/hci1/dev_79_02_92_BB_D5_23
+Address string 79:02:92:BB:D5:23
+AddressType string random
+Alias string 79-02-92-BB-D5-23
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -82
+Connected bool false
+TxPower int16 0
+ServicesResolved bool false
+Interface added
+Object path /org/bluez/hci1/dev_48_44_F7_29_7A_22
+Address string 48:44:F7:29:7A:22
+AddressType string public
+Name string TVBluetooth
+Alias string TVBluetooth
+Icon string audio-card
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -76
+Connected bool false
+Modalias string bluetooth:v0000p0000d0000
+TxPower int16 0
+ServicesResolved bool false
+Connected bool false
+Interface added
+Object path /org/bluez/hci1/dev_C5_F8_FB_D2_7A_71
+Address string C5:F8:FB:D2:7A:71
+AddressType string random
+Name string Meshtastic_7a71
+Alias string Meshtastic_7a71
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -86
+Connected bool false
+TxPower int16 0
+ServicesResolved bool false
+Interface added
+Object path /org/bluez/hci1/dev_FF_FF_92_13_76_14
+Address string FF:FF:92:13:76:14
+AddressType string public
+Name string NEMR92137614
+Alias string NEMR92137614
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -58
+Connected bool false
+TxPower int16 3
+ServicesResolved bool false
