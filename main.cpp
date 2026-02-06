@@ -165,18 +165,36 @@ static bool iterateArray(
         if (st != DBUS_TYPE_DICT_ENTRY)
             break;
 
+        // key is string | uint16
+        const char *key;
+        char keyInt[3] { 0,0,0};
         DBusMessageIter entry;
         dbus_message_iter_recurse(&arrIter, &entry);
-        if (dbus_message_iter_get_arg_type(&entry) != DBUS_TYPE_STRING)
-            break;
+        int kt = dbus_message_iter_get_arg_type(&entry);
+        switch (kt) {
+            case DBUS_TYPE_STRING:
+                dbus_message_iter_get_basic(&entry, &key);
+                break;
+            case DBUS_TYPE_UINT16:
+                dbus_message_iter_get_basic(&entry, &keyInt);
+                key = (const char *) &keyInt;
+                break;
+            default:
+                return false;
+        }
 
-        const char *key;
-        dbus_message_iter_get_basic(&entry, &key);
         dbus_message_iter_next(&entry);
         auto dt = dbus_message_iter_get_arg_type(&entry);
         switch (dt) {
             case DBUS_TYPE_ARRAY:
                 iterateArray(key, &entry, onDictEntry, extra);
+                break;
+            case DBUS_TYPE_VARIANT: {
+                // "unpack" variant
+                DBusMessageIter v;
+                dbus_message_iter_recurse(&entry, &v);
+                onDictEntry(key, &v, nullptr);
+            }
                 break;
             default:
                 onDictEntry(key, &entry, nullptr);
@@ -229,19 +247,32 @@ static int receiveBluetoothSignals(
                     void *extra
                 ) {
                     auto dt = dbus_message_iter_get_arg_type(val);
+                    uint64_t v;
                     switch (dt) {
-                        case DBUS_TYPE_INT64:
-                            int64_t r;
-                            dbus_message_iter_get_basic(val, &r);
-                            std::cout << key << " int64 " << r << std::endl;
+                        case DBUS_TYPE_BOOLEAN: {
+                            bool b;
+                            dbus_message_iter_get_basic(val, &b);
+                            std::cout << key << " bool " << (b ?  "true" : "false") << std::endl;
+                        }
                             break;
-                        case DBUS_TYPE_STRING:
+                        case DBUS_TYPE_INT16: {
+                            int16_t r;
+                            dbus_message_iter_get_basic(val, &r);
+                            std::cout << key << " int16 " << r << std::endl;
+                        }
+                            break;
+                        case DBUS_TYPE_STRING: {
                             char *str;
                             dbus_message_iter_get_basic(val, &str);
                             std::cout << key << " string " << str << std::endl;
-                            break;
-                        case DBUS_TYPE_VARIANT: {
                         }
+                            break;
+                        case DBUS_TYPE_BYTE: {
+                            uint8_t b;
+                            dbus_message_iter_get_basic(val, &b);
+                            std::cout << key << " byte " << (int) b << std::endl;
+                        }
+                            break;
                         default:
                             break;
                     }
