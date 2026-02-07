@@ -152,6 +152,7 @@ typedef void (*OnDictEntry)
     void *extra
 );
 
+
 static bool iterateArray(
     const char *parentKey,
     DBusMessageIter *args,
