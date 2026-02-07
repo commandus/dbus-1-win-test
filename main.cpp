@@ -166,6 +166,8 @@ static bool iterateArray(
     while (true) {
         // get array item type
         auto st = dbus_message_iter_get_arg_type(&arrIter);
+        if (st == DBUS_TYPE_INVALID)
+            return false;
         // get key from the dict entry if exists
         DBusMessageIter *entry;
         DBusMessageIter dictVal;
