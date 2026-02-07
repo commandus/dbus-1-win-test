@@ -153,7 +153,7 @@ typedef void (*OnDictEntry)
 );
 
 static bool iterateArray(
-    const char *arrayKey,
+    const char *parentKey,
     DBusMessageIter *args,
     OnDictEntry onDictEntry,
     void *extra
@@ -164,28 +164,29 @@ static bool iterateArray(
 
     while (true) {
         auto st = dbus_message_iter_get_arg_type(&arrIter);
-        if (st != DBUS_TYPE_DICT_ENTRY)
-            break;
-
-        // key is string | uint16
-        const char *key;
-        char keyInt[3] { 0,0,0};
         DBusMessageIter entry;
-        dbus_message_iter_recurse(&arrIter, &entry);
-        int kt = dbus_message_iter_get_arg_type(&entry);
-        switch (kt) {
-            case DBUS_TYPE_STRING:
-                dbus_message_iter_get_basic(&entry, &key);
-                break;
-            case DBUS_TYPE_UINT16:
-                dbus_message_iter_get_basic(&entry, &keyInt);
-                key = (const char *) &keyInt;
-                break;
-            default:
-                return false;
+
+
+        // get key from the dict entry if exists
+        const char *key = parentKey;    // default is parent key
+        if (st == DBUS_TYPE_DICT_ENTRY) {
+            char keyInt[3]{0, 0, 0};
+            dbus_message_iter_recurse(&arrIter, &entry);
+            int kt = dbus_message_iter_get_arg_type(&entry);
+            switch (kt) {
+                case DBUS_TYPE_STRING:
+                    dbus_message_iter_get_basic(&entry, &key);
+                    break;
+                case DBUS_TYPE_UINT16:
+                    dbus_message_iter_get_basic(&entry, &keyInt);
+                    key = (const char *) &keyInt;
+                    break;
+                default:
+                    return false;
+            }
+            dbus_message_iter_next(&entry);
         }
 
-        dbus_message_iter_next(&entry);
         auto dt = dbus_message_iter_get_arg_type(&entry);
         switch (dt) {
             case DBUS_TYPE_ARRAY:
@@ -267,7 +268,8 @@ static int receiveBluetoothSignals(
                             std::cout << key << " int16 " << r << std::endl;
                         }
                             break;
-                        case DBUS_TYPE_STRING: {
+                        case DBUS_TYPE_STRING:
+                        case DBUS_TYPE_OBJECT_PATH: {
                             char *str;
                             dbus_message_iter_get_basic(val, &str);
                             std::cout << key << " string " << str << std::endl;
