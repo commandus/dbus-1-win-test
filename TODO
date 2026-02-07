@@ -151,3 +151,56 @@ RSSI int16 -58
 Connected bool false
 TxPower int16 3
 ServicesResolved bool false
+
+
+
+
+/home/andrei/git/dbus-1-win-test/cmake-build-debug/dbus-1-win-test
+Connected to D-Bus as ":1.144".
+Interface added
+Object path /org/bluez/hci0/dev_63_7D_FF_74_E1_A9
+org.freedesktop.DBus.Introspectable unknown type 0
+Address string 63:7D:FF:74:E1:A9
+AddressType string random
+Alias string 63-7D-FF-74-E1-A9
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool false
+RSSI int16 -86
+Connected bool false
+UUIDs unknown type 0
+Adapter string /org/bluez/hci0
+L byte 22
+L byte 8
+L byte 0
+L byte 135
+L byte 183
+L byte 7
+L byte 19
+L byte 85
+L byte 135
+L byte 142
+ServicesResolved bool false
+org.freedesktop.DBus.Properties unknown type 0
+Interface added
+Object path /org/bluez/hci0/dev_1C_CC_D6_3E_D9_F8
+org.freedesktop.DBus.Introspectable unknown type 0
+Address string 1C:CC:D6:3E:D9:F8
+AddressType string public
+Name string Android Bluedroid
+Alias string Android Bluedroid
+Class unknown type 117
+Icon string phone
+Paired bool false
+Bonded bool false
+Trusted bool false
+Blocked bool false
+LegacyPairing bool true
+RSSI int16 -84
+Connected bool false
+UUIDs unknown type 0
+Adapter string /org/bluez/hci0
+ServicesResolved bool false
+org.freedesktop.DBus.Properties unknown type 0
