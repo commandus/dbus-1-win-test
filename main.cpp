@@ -195,7 +195,11 @@ static bool iterateArray(
                 // "unpack" variant
                 DBusMessageIter v;
                 dbus_message_iter_recurse(&entry, &v);
-                onDictEntry(key, &v, nullptr);
+                int vt = dbus_message_iter_get_arg_type(&v);
+                if (vt == DBUS_TYPE_ARRAY)
+                    iterateArray(key, &v, onDictEntry, extra);
+                else
+                    onDictEntry(key, &v, nullptr);
             }
                 break;
             default:
@@ -276,6 +280,7 @@ static int receiveBluetoothSignals(
                         }
                             break;
                         default:
+                            std::cout << key << " unknown type " << dt << std::endl;
                             break;
                     }
                 }, nullptr);
