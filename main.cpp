@@ -163,39 +163,44 @@ static bool iterateArray(
     dbus_message_iter_recurse(args, &arrIter);
 
     while (true) {
+        // get array item type
         auto st = dbus_message_iter_get_arg_type(&arrIter);
-        DBusMessageIter entry;
-
-
         // get key from the dict entry if exists
-        const char *key = parentKey;    // default is parent key
+        DBusMessageIter *entry;
+        DBusMessageIter dictVal;
+        const char *key;
+
         if (st == DBUS_TYPE_DICT_ENTRY) {
+            entry = &dictVal;
             char keyInt[3]{0, 0, 0};
-            dbus_message_iter_recurse(&arrIter, &entry);
-            int kt = dbus_message_iter_get_arg_type(&entry);
+            dbus_message_iter_recurse(&arrIter, entry);
+            int kt = dbus_message_iter_get_arg_type(entry);
             switch (kt) {
                 case DBUS_TYPE_STRING:
-                    dbus_message_iter_get_basic(&entry, &key);
+                    dbus_message_iter_get_basic(entry, &key);
                     break;
                 case DBUS_TYPE_UINT16:
-                    dbus_message_iter_get_basic(&entry, &keyInt);
+                    dbus_message_iter_get_basic(entry, &keyInt);
                     key = (const char *) &keyInt;
                     break;
                 default:
                     return false;
             }
-            dbus_message_iter_next(&entry);
+            dbus_message_iter_next(entry);
+        } else {
+            key = parentKey;
+            entry = &arrIter;
         }
 
-        auto dt = dbus_message_iter_get_arg_type(&entry);
+        auto dt = dbus_message_iter_get_arg_type(entry);
         switch (dt) {
             case DBUS_TYPE_ARRAY:
-                iterateArray(key, &entry, onDictEntry, extra);
+                iterateArray(key, entry, onDictEntry, extra);
                 break;
             case DBUS_TYPE_VARIANT: {
                 // "unpack" variant
                 DBusMessageIter v;
-                dbus_message_iter_recurse(&entry, &v);
+                dbus_message_iter_recurse(entry, &v);
                 int vt = dbus_message_iter_get_arg_type(&v);
                 if (vt == DBUS_TYPE_ARRAY)
                     iterateArray(key, &v, onDictEntry, extra);
@@ -204,7 +209,7 @@ static bool iterateArray(
             }
                 break;
             default:
-                onDictEntry(key, &entry, nullptr);
+                onDictEntry(key, entry, nullptr);
                 break;
         }
 
