@@ -195,6 +195,8 @@ static bool iterateArray(
             entry = &arrIter;
         }
 
+        std::cout << "Key " << key << std::endl;
+
         auto dt = dbus_message_iter_get_arg_type(entry);
         switch (dt) {
             case DBUS_TYPE_ARRAY:
