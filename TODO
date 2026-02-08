@@ -204,3 +204,344 @@ UUIDs unknown type 0
 Adapter string /org/bluez/hci0
 ServicesResolved bool false
 org.freedesktop.DBus.Properties unknown type 0
+
+
+/home/andrei/git/dbus-1-win-test/cmake-build-debug/dbus-1-win-test
+Connected to D-Bus as ":1.106".
+Interface added
+Object path /org/bluez/hci1
+Key org.freedesktop.DBus.Introspectable
+Key org.bluez.Adapter1
+Key Address
+Address string 8C:88:0B:6A:65:04
+Key AddressType
+AddressType string public
+Key Name
+Name string lenovo
+Key Alias
+Alias string lenovo
+Key Class
+Class unknown type 117
+Key Powered
+Powered bool false
+Key Discoverable
+Discoverable bool false
+Key DiscoverableTimeout
+DiscoverableTimeout unknown type 117
+Key Pairable
+Pairable bool false
+Key PairableTimeout
+PairableTimeout unknown type 117
+Key Discovering
+Discovering bool false
+Key UUIDs
+Key UUIDs
+UUIDs string 0000110e-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000111f-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001200-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001132-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001133-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000110c-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001800-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000112f-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001801-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001106-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000180a-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001104-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000111e-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001105-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00005005-0000-1000-8000-0002ee000001
+Key Modalias
+Modalias string usb:v1D6Bp0246d0548
+Key Roles
+Key Roles
+Roles string central
+Key Roles
+Roles string peripheral
+Key Manufacturer
+Manufacturer unknown type 113
+Key Version
+Version byte 10
+Key org.freedesktop.DBus.Properties
+Key org.bluez.BatteryProviderManager1
+Key org.bluez.GattManager1
+Key org.bluez.Media1
+Key SupportedUUIDs
+Key SupportedUUIDs
+SupportedUUIDs string 0000110a-0000-1000-8000-00805f9b34fb
+Key SupportedUUIDs
+SupportedUUIDs string 0000110b-0000-1000-8000-00805f9b34fb
+Key org.bluez.NetworkServer1
+Interface added
+Object path /org/bluez/hci1
+Key org.bluez.LEAdvertisingManager1
+Key ActiveInstances
+ActiveInstances byte 0
+Key SupportedInstances
+SupportedInstances byte 4
+Key SupportedIncludes
+Key SupportedIncludes
+SupportedIncludes string tx-power
+Key SupportedIncludes
+SupportedIncludes string appearance
+Key SupportedIncludes
+SupportedIncludes string local-name
+Key SupportedSecondaryChannels
+Key SupportedSecondaryChannels
+SupportedSecondaryChannels string 1M
+Key SupportedSecondaryChannels
+SupportedSecondaryChannels string 2M
+Key SupportedSecondaryChannels
+SupportedSecondaryChannels string Coded
+Interface added
+Object path /org/bluez/hci1/dev_1C_CC_D6_3E_D9_F8
+Key org.freedesktop.DBus.Introspectable
+Key org.bluez.Device1
+Key Address
+Address string 1C:CC:D6:3E:D9:F8
+Key AddressType
+AddressType string public
+Key Name
+Name string Android Bluedroid
+Key Alias
+Alias string Android Bluedroid
+Key Class
+Class unknown type 117
+Key Icon
+Icon string phone
+Key Paired
+Paired bool false
+Key Bonded
+Bonded bool false
+Key Trusted
+Trusted bool false
+Key Blocked
+Blocked bool false
+Key LegacyPairing
+LegacyPairing bool false
+Key RSSI
+RSSI int16 -82
+Key Connected
+Connected bool false
+Key UUIDs
+Key UUIDs
+UUIDs string 00001105-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000110a-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000110c-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000110e-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001112-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001115-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001116-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000111f-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 0000112f-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001200-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00001132-0000-1000-8000-00805f9b34fb
+Key UUIDs
+UUIDs string 00000000-0000-0000-0000-000000000000
+Key Adapter
+Adapter string /org/bluez/hci1
+Key ServicesResolved
+ServicesResolved bool false
+Key org.freedesktop.DBus.Properties
+Key org.bluez.Network1
+Key Connected
+Connected bool false
+Key org.bluez.MediaControl1
+Key Connected
+Connected bool false
+Interface added
+Object path /org/bluez/hci1/dev_23_7B_27_39_78_29
+Key org.freedesktop.DBus.Introspectable
+Key org.bluez.Device1
+Key Address
+Address string 23:7B:27:39:78:29
+Key AddressType
+AddressType string random
+Key Alias
+Alias string 23-7B-27-39-78-29
+Key Paired
+Paired bool false
+Key Bonded
+Bonded bool false
+Key Trusted
+Trusted bool false
+Key Blocked
+Blocked bool false
+Key LegacyPairing
+LegacyPairing bool false
+Key RSSI
+RSSI int16 -74
+Key Connected
+Connected bool false
+Key UUIDs
+Key UUIDs
+UUIDs string 0000fcf1-0000-1000-8000-00805f9b34fb
+Key Adapter
+Adapter string /org/bluez/hci1
+Key ServiceData
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 4
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 159
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 109
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 185
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 11
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 140
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 227
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 247
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 41
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 230
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 223
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 212
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 226
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 43
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 86
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 39
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 210
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 103
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 149
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 128
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 131
+Key 0000fcf1-0000-1000-8000-00805f9b34fb
+0000fcf1-0000-1000-8000-00805f9b34fb byte 128
+Key ServicesResolved
+ServicesResolved bool false
+Key org.freedesktop.DBus.Properties
+Interface added
+Object path /org/bluez/hci1/dev_5B_9C_FA_E4_B4_A5
+Key org.freedesktop.DBus.Introspectable
+Key org.bluez.Device1
+Key Address
+Address string 5B:9C:FA:E4:B4:A5
+Key AddressType
+AddressType string random
+Key Alias
+Alias string 5B-9C-FA-E4-B4-A5
+Key Paired
+Paired bool false
+Key Bonded
+Bonded bool false
+Key Trusted
+Trusted bool false
+Key Blocked
+Blocked bool false
+Key LegacyPairing
+LegacyPairing bool false
+Key RSSI
+RSSI int16 -88
+Key Connected
+Connected bool false
+Key UUIDs
+Key UUIDs
+UUIDs string 0000feb9-0000-1000-8000-00805f9b34fb
+Key Adapter
+Adapter string /org/bluez/hci1
+Key ManufacturerData
+Key �
+Key �
+� byte 59
+Key �
+� byte 51
+Key �
+� byte 2
+Key �
+� byte 19
+Key �
+� byte 21
+Key �
+� byte 128
+Key ServicesResolved
+ServicesResolved bool false
+Key org.freedesktop.DBus.Properties
+Interface added
+Object path /org/bluez/hci1/dev_FF_FF_92_13_76_14
+Key org.freedesktop.DBus.Introspectable
+Key org.bluez.Device1
+Key Address
+Address string FF:FF:92:13:76:14
+Key AddressType
+AddressType string public
+Key Name
+Name string NEMR92137614
+Key Alias
+Alias string NEMR92137614
+Key Paired
+Paired bool false
+Key Bonded
+Bonded bool false
+Key Trusted
+Trusted bool false
+Key Blocked
+Blocked bool false
+Key LegacyPairing
+LegacyPairing bool false
+Key RSSI
+RSSI int16 -60
+Key Connected
+Connected bool false
+Key UUIDs
+Key UUIDs
+UUIDs string 0000fef0-0000-1000-8000-00805f9b34fb
+Key Adapter
+Adapter string /org/bluez/hci1
+Key ManufacturerData
+Key SP
+Key SP
+SP byte 11
+Key SP
+SP byte 28
+Key SP
+SP byte 129
+Key SP
+SP byte 1
+Key SP
+SP byte 65
+Key TxPower
+TxPower int16 3
+Key ServicesResolved
+ServicesResolved bool false
+Key org.freedesktop.DBus.Properties
